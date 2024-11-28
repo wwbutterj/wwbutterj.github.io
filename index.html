@@ -1,12 +1,154 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <h1>
-      Testing...
-    </h1>
-    <img src="https://meow.autos/cat.jpg">
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watu Watu, Butter, and Johnny's Adventures</title>
+    <style>
+        body {
+            font-family: 'Helvetica', Arial, sans-serif; /* Using Helvetica font */
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .story {
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .cover {
+            width: 100%;
+            height: auto; /* Adjust height automatically */
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .content {
+            display: none;
+            margin-top: 15px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <link rel="manifest" href="data:application/manifest+json,{
+        &quot;name&quot;: &quot;Watu Watu's Adventures&quot;,
+        &quot;short_name&quot;: &quot;WatuStories&quot;,
+        &quot;start_url&quot;: &quot;index.html&quot;,
+        &quot;display&quot;: &quot;standalone&quot;,
+        &quot;background_color&quot;: &quot;#f0f0f0&quot;,
+        &quot;theme_color&quot;: &quot;#4CAF50&quot;,
+        &quot;icons&quot;: [
+            {
+                &quot;src&quot;: &quot;icon.png&quot;,
+                &quot;sizes&quot;: &quot;192x192&quot;,
+                &quot;type&quot;: &quot;image/png&quot;
+            }
+        ]
+    }">
+</head>
+<body>
+    <h1>Watu Watu, Butter, and Johnny's Adventures</h1>
+    <div id="stories">
+        <!-- Example of a single story entry -->
+        <div class="story">
+            <img class="cover" src="covers/chilis_cover.jpg" alt="Chili's Adventure Cover">
+            <h2>Watu Watu, Butter, and Johnny Open a Chili's</h2>
+            <button onclick="loadStory('stories/chilis.txt', 'chilis')">Read Story</button>
+            <div id="chilis" class="content"></div>
+        </div>
+
+        <div class="story">
+            <img class="cover" src="covers/btd6_cover.jpg" alt="BTD6 Adventure Cover">
+            <h2>Real-Life Bloons TD 6 Adventure</h2>
+            <button onclick="loadStory('stories/btd6.txt', 'btd6')">Read Story</button>
+            <div id="btd6" class="content"></div>
+        </div>
+
+        <div class="story">
+            <img class="cover" src="covers/washington_cover.jpg" alt="Time Travel Adventure Cover">
+            <h2>Time Travel with George Washington</h2>
+            <button onclick="loadStory('stories/washington.txt', 'washington')">Read Story</button>
+            <div id="washington" class="content"></div>
+        </div>
+
+        <div class="story">
+            <img class="cover" src="covers/storm_cover.jpg" alt="Storm Rescue Cover">
+            <h2>Saving Animals in the Storm</h2>
+            <button onclick="loadStory('stories/storm.txt', 'storm')">Read Story</button>
+            <div id="storm" class="content"></div>
+        </div>
+
+        <div class="story">
+            <img class="cover" src="covers/alien_cover.jpg" alt="Alien Asteroid Cover">
+            <h2>Alien Asteroid Rescue Mission</h2>
+            <button onclick="loadStory('stories/alien.txt', 'alien')">Read Story</button>
+            <div id="alien" class="content"></div>
+        </div>
+
+        <!-- Repeat the above block for each of the remaining stories -->
+        
+    </div>
+
+    <script>
+        function loadStory(filePath, contentId) {
+            const contentDiv = document.getElementById(contentId);
+            
+            if (contentDiv.innerHTML === "") { // Load only if empty
+                fetch(filePath)
+                    .then(response => response.text())
+                    .then(data => {
+                        contentDiv.innerHTML = data.replace(/\n/g, '<br>'); // Convert new lines to HTML breaks
+                        contentDiv.style.display = "block"; // Show the content
+                    })
+                    .catch(error => console.error('Error loading story:', error));
+                
+                // Change button text to "Hide Story"
+                const button = contentDiv.previousElementSibling.querySelector('button');
+                button.textContent = "Hide Story";
+                button.setAttribute("onclick", `hideStory('${contentId}')`);
+                
+                return;
+            }
+
+            // If content is already loaded, just toggle visibility
+            toggleVisibility(contentDiv);
+        }
+
+        function hideStory(contentId) {
+            const contentDiv = document.getElementById(contentId);
+            
+            contentDiv.style.display = "none"; // Hide the content
+            
+            // Change button text back to "Read Story"
+            const button = contentDiv.previousElementSibling.querySelector('button');
+            button.textContent = "Read Story";
+            button.setAttribute("onclick", `loadStory('stories/${contentId}.txt', '${contentId}')`);
+        }
+
+        function toggleVisibility(contentDiv) {
+          if (contentDiv.style.display === "none" || contentDiv.style.display === "") {
+              contentDiv.style.display = "block";
+          } else {
+              contentDiv.style.display = "none";
+          }
+      }
+    </script>
+</body>
 </html>
